@@ -5,9 +5,8 @@ using System.Collections;
 public class PinCounter : MonoBehaviour {
 
     public Text standingPinText;
-    public GameManager gameManager;
-
-    private const int INITIAL_PIN_COUNT = 10;
+    
+    private GameManager gameManager;
     private bool ballLeftBox = false;
     private int lastStandingCount = -1;
     private float lastChangeTime;
@@ -19,11 +18,7 @@ public class PinCounter : MonoBehaviour {
         {
             GameObject.Find("Pin Count");
         }
-        maxPinsThisRoll = INITIAL_PIN_COUNT;
-        if (gameManager == null)
-        {
-            GameObject.FindObjectOfType<GameManager>();
-        }
+        gameManager = GameObject.FindObjectOfType<GameManager>();
 	}
 	
 	// Update is called once per frame
@@ -36,6 +31,14 @@ public class PinCounter : MonoBehaviour {
             UpdateStandingCountAndSettle();
         }
 	}
+
+    void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.GetComponent<Ball>() != null)
+        {
+            ballLeftBox = true;
+        }
+    }
 
     int CountStanding()
     {
@@ -83,10 +86,15 @@ public class PinCounter : MonoBehaviour {
         ballLeftBox = true;
     }
 
+    public void SetMaxPinsForCurrentRoll(int maxPins)
+    {
+        maxPinsThisRoll = maxPins;
+    }
+
     private void ReportScoreToGameManager()
     {
         //Debug.Log(maxPinsThisRoll - lastStandingCount);
-        gameManager.ReportPinsKnockedDown(maxPinsThisRoll - lastStandingCount);
+        gameManager.Bowl(maxPinsThisRoll - lastStandingCount);
     }
 
     private void ResetPinCounter()
