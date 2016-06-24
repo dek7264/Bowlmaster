@@ -64,11 +64,14 @@ public class ActionMasterTest {
     [Test]
     public void T04Bowl2_8SpareReturnsEndTurn()
     {
-        List<int> pinList = new List<int> { 2 };
-        //Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(2));
-        Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
-        //Assert.AreEqual(endTurn, actionMaster.BowlAndReturnActionToPerform(8));
-        pinList.Add(8);
+        List<int> pinList = new List<int> { 2, 8 };
+        ////Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(2));
+
+        //Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
+
+        ////Assert.AreEqual(endTurn, actionMaster.BowlAndReturnActionToPerform(8));
+        
+        //pinList.Add(8);
         Assert.AreEqual(endTurn, actionMaster.GetNextAction(pinList));
     }
 
@@ -95,11 +98,11 @@ public class ActionMasterTest {
     public void T07Roll20ReturnsTidyIfStrikeOnFirstRoll()
     {
         //RollDummyFirst9Frames();
-        List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10 };
+        List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10, 5 };
         //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
 
-        pinList.Add(5);
+        //pinList.Add(5);
         //Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(5));
         Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
         
@@ -109,11 +112,11 @@ public class ActionMasterTest {
     public void T08Roll20ReturnsResetIfStrikeOnSecondRoll()
     {
         //RollDummyFirst9Frames();
-        List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10 };
+        List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10, 10 };
         //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
 
-        pinList.Add(10);
+        //pinList.Add(10);
         //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
         Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
     }
@@ -122,15 +125,15 @@ public class ActionMasterTest {
     public void T09FinishGame3Strikes()
     {
         //RollDummyFirst9Frames();
-        List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10 };
+        List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10, 10, 10 };
         //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
 
-        pinList.Add(10);
+        //pinList.Add(10);
         //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
 
-        pinList.Add(10);
+        //pinList.Add(10);
         //Assert.AreEqual(endGame, actionMaster.BowlAndReturnActionToPerform(10));
         Assert.AreEqual(endGame, actionMaster.GetNextAction(pinList));        
     }
@@ -139,11 +142,11 @@ public class ActionMasterTest {
     public void T10FinishGameNoBonus()
     {
         //RollDummyFirst9Frames();
-        List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 };
+        List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 };
         //Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(1));
-        Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
 
-        pinList.Add(2);
+        //pinList.Add(2);
         //Assert.AreEqual(endGame, actionMaster.BowlAndReturnActionToPerform(2));
         Assert.AreEqual(endGame, actionMaster.GetNextAction(pinList));
     }

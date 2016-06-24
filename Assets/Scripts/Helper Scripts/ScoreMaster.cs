@@ -5,12 +5,48 @@ using System.Collections.Generic;
 public class ScoreMaster {
 
     //Returns a list of individual frame scores, NOT cumulative
-    public List<int> ScoreFrames (List<int> rolls)
+    public List<int> ScoreFrames (List<int> rollList)
     {
         List<int> frameList = new List<int>();
 
-        //Code here - 19 new lines?
+        int frameScore = 0;
+        bool frameIsClosed = false;
+        bool isFirstRoll = true;
 
+        for (int rollIndex = 0; rollIndex < rollList.Count; rollIndex++)
+        {
+            frameScore += rollList[rollIndex];
+            if (frameScore >= 10)
+            {
+                if (isFirstRoll == true && rollList.Count - 1 >= rollIndex + 2)
+                {
+                    frameScore += rollList[rollIndex + 1];
+                    frameScore += rollList[rollIndex + 2];
+                    frameIsClosed = true;
+                }
+                else if (isFirstRoll == false && rollList.Count - 1 >= rollIndex + 1)
+                {
+                    frameScore += rollList[rollIndex + 1];
+                    if (frameList.Count < 10 || rollIndex == 20)
+                    {
+                        frameIsClosed = true;
+                    }
+                }
+            }
+            else if (isFirstRoll == false)
+                frameIsClosed = true;
+            if (frameIsClosed == true)
+            {
+                frameList.Add(frameScore);
+                if (frameList.Count >= 10)
+                    break;
+                frameScore = 0;
+                isFirstRoll = true;
+                frameIsClosed = false;
+            }
+            else
+                isFirstRoll = false;
+        }
 
         return frameList;
     }

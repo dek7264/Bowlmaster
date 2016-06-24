@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ActionMaster {
 
     public enum Action {Tidy, Reset, EndTurn, EndGame};
-    //public int roll = 1;
+    private int roll = 1;
 
     //private int[] scoreEachRoll = new int[21];
     //private bool playerGetsThirdRollOnLastFrame = false;
@@ -13,64 +13,71 @@ public class ActionMaster {
 	public Action GetNextAction (List<int> pinList)
     {
         //TODO Account for second roll in a frame to be 0 if player rolled a strike on the first roll. For Loop?
-
-        //Get the pins knocked down on the most recent roll
-        int pinsHitLastRoll = pinList[pinList.Count - 1];
-
-        //Validate that we received a valid number of pins hit
-        if (pinsHitLastRoll < 0 || pinsHitLastRoll > 10)
+        Action actionToReturn = new Action();
+        bool isFinalFrame = false;
+        foreach (int pinFall in pinList)
         {
-            throw new UnityException("Invalid pin amount sent to ActionMaster.Bowl!");
-        }
+            //Get the pins knocked down on the most recent roll
+            //int pinsHitLastRoll = pinList[roll - 1];
 
-        //Check if this is the final frame
-        bool isFinalFrame = IsFinalFrame(pinList);
-
-        //Special logic for the last frame
-        if (isFinalFrame == true)
-        {
-            return ProcessFinalFrame(pinList, pinsHitLastRoll);
-        }
-        else
-        {
-            //Frames 1 through 9
-            //Check if this is the first roll of the frame
-            bool isFirstRoll = IsFirstRollOfFrame(pinList);
-
-            //If first bowl of frame is less than 10, return tidy else return end turn
-            if (isFirstRoll == true)
+            //Validate that we received a valid number of pins hit
+            if (pinFall < 0 || pinFall > 10)
             {
-                //First bowl in a frame (or last frame)
-                if (pinsHitLastRoll == 10)
-                {
-                    //Strike was bowled. Increment the bowl counter by 2 and end the turn.
-                    //roll += 2;
-                    return Action.EndTurn;
-                }
-                else
-                {
-                    //roll += 1;
-                    return Action.Tidy;
-                }
+                throw new UnityException("Invalid pin amount sent to ActionMaster.Bowl!");
+            }
+
+            //Check if this is the final frame
+            if (isFinalFrame == false)
+            {
+                isFinalFrame = IsFinalFrame();
+            }
+
+            //Special logic for the last frame
+            if (isFinalFrame == true)
+            {
+                actionToReturn = ProcessFinalFrame(pinList, pinFall);
             }
             else
             {
-                //Second bowl in a frame
-                //roll += 1;
-                return Action.EndTurn;
+                //Frames 1 through 9
+                //Check if this is the first roll of the frame
+                bool isFirstRoll = IsFirstRollOfFrame();
+
+                //If first bowl of frame is less than 10, return tidy else return end turn
+                if (isFirstRoll == true)
+                {
+                    //First bowl in a frame (or last frame)
+                    if (pinFall == 10)
+                    {
+                        //Strike was bowled. Increment the bowl counter by 2 and end the turn.
+                        roll += 2;
+                        actionToReturn = Action.EndTurn;
+                    }
+                    else
+                    {
+                        roll += 1;
+                        actionToReturn = Action.Tidy;
+                    }
+                }
+                else
+                {
+                    //Second bowl in a frame
+                    roll += 1;
+                    actionToReturn = Action.EndTurn;
+                }
             }
         }
-
         //throw new UnityException("Not sure what action to return!");
+        return actionToReturn;
     }
 
     private Action ProcessFinalFrame(List<int> pinList, int pinsHitLastRoll)
     {
-        switch (pinList.Count)
+        switch (roll)
         {
             case 19:
                 //Player always gets to roll ball 20 whether they just rolled a strike or not
-                //roll += 1;
+                roll += 1;
                 if (pinsHitLastRoll == 10)
                 {
                     return Action.Reset;
@@ -80,7 +87,7 @@ public class ActionMaster {
                     return Action.Tidy;
                 }
             case 20:
-                //roll += 1;
+                roll += 1;
                 int scoreForRoll19And20 = pinsHitLastRoll + pinList[pinList.Count - 2];
                 if (scoreForRoll19And20 >= 10)
                 {
@@ -113,9 +120,9 @@ public class ActionMaster {
         }
     }
 
-    private bool IsFirstRollOfFrame(List<int> pinList)
+    private bool IsFirstRollOfFrame()
     {
-        if (pinList.Count % 2 == 0)
+        if (roll % 2 == 0)
         {
             return false;
         }
@@ -125,9 +132,9 @@ public class ActionMaster {
         }
     }
 
-    private bool IsFinalFrame(List<int> pinList)
+    private bool IsFinalFrame()
     {
-        if (pinList.Count >= 19)
+        if (roll >= 19)
         {
             return true;
         }

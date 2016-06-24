@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     private ActionMaster actionMaster = new ActionMaster();
     private ScoreMaster scoreMaster = new ScoreMaster();
     private PinCounter pinCounter;
+    private ScoreDisplay scoreDisplay;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +24,10 @@ public class GameManager : MonoBehaviour {
         {
             GameObject.FindObjectOfType<PinSetter>();
         }
+        if (scoreDisplay == null)
+        {
+            GameObject.FindObjectOfType<ScoreDisplay>();
+        }
         InitializePinCounter();
 	}
 
@@ -31,11 +36,6 @@ public class GameManager : MonoBehaviour {
         pinCounter = GameObject.FindObjectOfType<PinCounter>();
         pinCounter.SetMaxPinsForCurrentRoll(INITIAL_PIN_COUNT);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     public void Bowl(int pinsKnockedDown)
     {
@@ -43,20 +43,30 @@ public class GameManager : MonoBehaviour {
         //Register number of pins knocked down
         pinsKnockedDownList.Add(pinsKnockedDown);
 
+        //Reset the ball
+        ResetBall();
+
         //Get the Action for the pinSetter to Perform
         ActionMaster.Action nextAction = GetNextPinSetterAction();
 
         //Inform the PinCounter of it's maximum number of pins for the next roll
+        Debug.Log("NextAction for PinCounter: " + nextAction.ToString() + " PinsKnockedDown: " + pinsKnockedDown.ToString());
         SetPinCounterMaxPinsForCurrentRollBasedOnNextAction(nextAction, pinsKnockedDown);
+        Debug.Log("Made it out of SetPinCounterMaxPins");
 
         //Report pinsKnockedDown to the ActionMaster and get the Action the PinSetter needs to perform
         ReportActionToPinSetter(nextAction);
+        Debug.Log("Made it out of ReportActionToPinSetter");
+
+        //Pass roll scores to ScoreDisplay
+        scoreDisplay.FillScoreCard(pinsKnockedDownList);
 
         //Pass pinsKnockedDownList to ScoreMaster so it can generate the final frame scores to report to the ScoreDisplay
-        GetFrameScores();
+        //GetFrameScores();
 
-        //Reset the ball
-        ResetBall();
+        //Pass cumulative frame scores to ScoreDisplay
+
+        
     }
 
     private ActionMaster.Action GetNextPinSetterAction()
@@ -70,10 +80,12 @@ public class GameManager : MonoBehaviour {
     {
         if (nextAction == ActionMaster.Action.Tidy)
         {
+            Debug.Log("PinCounter Next Action Tidy");
             pinCounter.SetMaxPinsForCurrentRoll(INITIAL_PIN_COUNT - pinsKnockedDown);
         }
         else if (nextAction == ActionMaster.Action.Reset || nextAction == ActionMaster.Action.EndTurn)
         {
+            Debug.Log("PinCounter Next Action Reset or EndTurn");
             pinCounter.SetMaxPinsForCurrentRoll(INITIAL_PIN_COUNT);
         }
         else if (nextAction == ActionMaster.Action.EndGame)
