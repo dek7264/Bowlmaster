@@ -26,12 +26,10 @@ public class PinSetter : MonoBehaviour {
     {
         if (actionToPerform == ActionMaster.Action.Tidy)
         {
-            Debug.Log("PinSetter performing Tidy");
             animator.SetTrigger("tidyTrigger");
         }
         else if (actionToPerform == ActionMaster.Action.Reset || actionToPerform == ActionMaster.Action.EndTurn)
         {
-            Debug.Log("PinSetter performing Reset");
             animator.SetTrigger("resetTrigger");
         }
         else if (actionToPerform == ActionMaster.Action.EndGame)

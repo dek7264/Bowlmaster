@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScoreMaster {
+public static class ScoreMaster {
 
     //Returns a list of individual frame scores, NOT cumulative
-    public List<int> ScoreFrames (List<int> rollList)
+    public static  List<int> ScoreFrames (List<int> rollList)
     {
         List<int> frameList = new List<int>();
 
@@ -52,7 +52,7 @@ public class ScoreMaster {
     }
 
     //Returns a list of cumulative scores, like a normal score card.
-    public List<int> ScoreCumulative (List<int> rolls)
+    public static List<int> ScoreCumulative (List<int> rolls)
     {
         List<int> cumulativeScore = new List<int>();
         int runningTotal = 0;
@@ -60,9 +60,10 @@ public class ScoreMaster {
         foreach (int frameScore in ScoreFrames(rolls))
         {
             runningTotal += frameScore;
+            Debug.Log("Adding cumulative frame score to cumulativeScore: " + frameScore.ToString());
             cumulativeScore.Add(runningTotal);
         }
-
+        Debug.Log("Returning cumulativeScore with item count: " + cumulativeScore.Count.ToString());
         return cumulativeScore;
     }
 }

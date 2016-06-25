@@ -93,7 +93,6 @@ public class PinCounter : MonoBehaviour {
 
     private void ReportScoreToGameManager()
     {
-        //Debug.Log(maxPinsThisRoll - lastStandingCount);
         gameManager.Bowl(maxPinsThisRoll - lastStandingCount);
     }
 

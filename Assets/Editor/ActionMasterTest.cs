@@ -10,14 +10,7 @@ public class ActionMasterTest {
     private ActionMaster.Action tidy = ActionMaster.Action.Tidy;
     private ActionMaster.Action reset = ActionMaster.Action.Reset;
     private ActionMaster.Action endGame = ActionMaster.Action.EndGame;
-    private ActionMaster actionMaster;
-
-    [SetUp]
-    public void SetUp()
-    {
-        actionMaster = new ActionMaster();
-    }
-
+    
     [Test]
     public void T00PassingTest()
     {
@@ -41,47 +34,47 @@ public class ActionMasterTest {
     public void T01OneStrikeReturnsEndTurn()
     {
         List<int> pinList = new List<int> { 10 };
-        Assert.AreEqual(endTurn,actionMaster.GetNextAction(pinList));
+        Assert.AreEqual(endTurn,ActionMaster.NextAction(pinList));
     }
 
     [Test]
     public void T02Bowl8ReturnsTidy()
     {
         List<int> pinList = new List<int> { 8 };
-        //Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(8));
-        Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(tidy, ActionMaster.BowlAndReturnActionToPerform(8));
+        Assert.AreEqual(tidy, ActionMaster.NextAction(pinList));
     }
 
     [Test]
     public void T03CompleteFrameNoStrikeNoSpareReturnsEndTurn()
     {
         List<int> pinList = new List<int> { 7, 2 };
-        //actionMaster.BowlAndReturnActionToPerform(7);
-        //Assert.AreEqual(endTurn, actionMaster.BowlAndReturnActionToPerform(2));
-        Assert.AreEqual(endTurn, actionMaster.GetNextAction(pinList));
+        //ActionMaster.BowlAndReturnActionToPerform(7);
+        //Assert.AreEqual(endTurn, ActionMaster.BowlAndReturnActionToPerform(2));
+        Assert.AreEqual(endTurn, ActionMaster.NextAction(pinList));
     }
 
     [Test]
     public void T04Bowl2_8SpareReturnsEndTurn()
     {
         List<int> pinList = new List<int> { 2, 8 };
-        ////Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(2));
+        ////Assert.AreEqual(tidy, ActionMaster.BowlAndReturnActionToPerform(2));
 
-        //Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(tidy, ActionMaster.NextAction(pinList));
 
-        ////Assert.AreEqual(endTurn, actionMaster.BowlAndReturnActionToPerform(8));
+        ////Assert.AreEqual(endTurn, ActionMaster.BowlAndReturnActionToPerform(8));
         
         //pinList.Add(8);
-        Assert.AreEqual(endTurn, actionMaster.GetNextAction(pinList));
+        Assert.AreEqual(endTurn, ActionMaster.NextAction(pinList));
     }
 
     //[Test]
     //public void T05Bowl0_10SpareIncrementsRollBy1()
     //{
     //    List<int> pinList = new List<int> { 0, 10 };
-    //    actionMaster.BowlAndReturnActionToPerform(0);
-    //    actionMaster.BowlAndReturnActionToPerform(10);
-    //    Assert.AreEqual(3, actionMaster.roll);
+    //    ActionMaster.BowlAndReturnActionToPerform(0);
+    //    ActionMaster.BowlAndReturnActionToPerform(10);
+    //    Assert.AreEqual(3, ActionMaster.roll);
     //}
 
     [Test]
@@ -89,9 +82,9 @@ public class ActionMasterTest {
     {
         //RollDummyFirst9Frames();
         List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 9 };
-        //actionMaster.BowlAndReturnActionToPerform(1);
-        //Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(9));
-        Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
+        //ActionMaster.BowlAndReturnActionToPerform(1);
+        //Assert.AreEqual(tidy, ActionMaster.BowlAndReturnActionToPerform(9));
+        Assert.AreEqual(reset, ActionMaster.NextAction(pinList));
     }
 
     [Test]
@@ -99,12 +92,12 @@ public class ActionMasterTest {
     {
         //RollDummyFirst9Frames();
         List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10, 5 };
-        //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        //Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, ActionMaster.BowlAndReturnActionToPerform(10));
+        //Assert.AreEqual(reset, ActionMaster.NextAction(pinList));
 
         //pinList.Add(5);
-        //Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(5));
-        Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(tidy, ActionMaster.BowlAndReturnActionToPerform(5));
+        Assert.AreEqual(tidy, ActionMaster.NextAction(pinList));
         
     }
 
@@ -113,12 +106,12 @@ public class ActionMasterTest {
     {
         //RollDummyFirst9Frames();
         List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10, 10 };
-        //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        //Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, ActionMaster.BowlAndReturnActionToPerform(10));
+        //Assert.AreEqual(reset, ActionMaster.NextAction(pinList));
 
         //pinList.Add(10);
-        //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, ActionMaster.BowlAndReturnActionToPerform(10));
+        Assert.AreEqual(reset, ActionMaster.NextAction(pinList));
     }
 
     [Test]
@@ -126,16 +119,16 @@ public class ActionMasterTest {
     {
         //RollDummyFirst9Frames();
         List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 10, 10, 10 };
-        //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        //Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, ActionMaster.BowlAndReturnActionToPerform(10));
+        //Assert.AreEqual(reset, ActionMaster.NextAction(pinList));
 
         //pinList.Add(10);
-        //Assert.AreEqual(reset, actionMaster.BowlAndReturnActionToPerform(10));
-        //Assert.AreEqual(reset, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(reset, ActionMaster.BowlAndReturnActionToPerform(10));
+        //Assert.AreEqual(reset, ActionMaster.NextAction(pinList));
 
         //pinList.Add(10);
-        //Assert.AreEqual(endGame, actionMaster.BowlAndReturnActionToPerform(10));
-        Assert.AreEqual(endGame, actionMaster.GetNextAction(pinList));        
+        //Assert.AreEqual(endGame, ActionMaster.BowlAndReturnActionToPerform(10));
+        Assert.AreEqual(endGame, ActionMaster.NextAction(pinList));        
     }
 
     [Test]
@@ -143,29 +136,29 @@ public class ActionMasterTest {
     {
         //RollDummyFirst9Frames();
         List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 };
-        //Assert.AreEqual(tidy, actionMaster.BowlAndReturnActionToPerform(1));
-        //Assert.AreEqual(tidy, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(tidy, ActionMaster.BowlAndReturnActionToPerform(1));
+        //Assert.AreEqual(tidy, ActionMaster.NextAction(pinList));
 
         //pinList.Add(2);
-        //Assert.AreEqual(endGame, actionMaster.BowlAndReturnActionToPerform(2));
-        Assert.AreEqual(endGame, actionMaster.GetNextAction(pinList));
+        //Assert.AreEqual(endGame, ActionMaster.BowlAndReturnActionToPerform(2));
+        Assert.AreEqual(endGame, ActionMaster.NextAction(pinList));
     }
 
     [Test]
     public void T11PerfectGameReturnsEndGame()
     {
         List<int> pinList = new List<int> { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
-        Assert.AreEqual(endGame, actionMaster.GetNextAction(pinList));
+        Assert.AreEqual(endGame, ActionMaster.NextAction(pinList));
     }
 
     //private void RollDummyFirst9Frames()
     //{
     //    List<int> pinList = new List<int> { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 };
-    //    actionMaster.BowlAndReturnActionToPerform(pinList);
+    //    ActionMaster.BowlAndReturnActionToPerform(pinList);
     //    //int[] scoreArray = new int[18] { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 };
     //    //foreach (int score in scoreArray)
     //    //{
-    //    //    actionMaster.BowlAndReturnActionToPerform(score);
+    //    //    ActionMaster.BowlAndReturnActionToPerform(score);
     //    //}
     //}
 }

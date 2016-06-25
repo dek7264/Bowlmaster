@@ -5,16 +5,12 @@ using System.Collections.Generic;
 public class ActionMaster {
 
     public enum Action {Tidy, Reset, EndTurn, EndGame};
-    private int roll = 1;
-
-    //private int[] scoreEachRoll = new int[21];
-    //private bool playerGetsThirdRollOnLastFrame = false;
-
-	public Action GetNextAction (List<int> pinList)
+    
+	public static Action NextAction (List<int> pinList)
     {
-        //TODO Account for second roll in a frame to be 0 if player rolled a strike on the first roll. For Loop?
         Action actionToReturn = new Action();
         bool isFinalFrame = false;
+        int roll = 1;
         foreach (int pinFall in pinList)
         {
             //Get the pins knocked down on the most recent roll
@@ -29,19 +25,19 @@ public class ActionMaster {
             //Check if this is the final frame
             if (isFinalFrame == false)
             {
-                isFinalFrame = IsFinalFrame();
+                isFinalFrame = IsFinalFrame(roll);
             }
 
             //Special logic for the last frame
             if (isFinalFrame == true)
             {
-                actionToReturn = ProcessFinalFrame(pinList, pinFall);
+                actionToReturn = ProcessFinalFrame(pinList, pinFall, roll);
             }
             else
             {
                 //Frames 1 through 9
                 //Check if this is the first roll of the frame
-                bool isFirstRoll = IsFirstRollOfFrame();
+                bool isFirstRoll = IsFirstRollOfFrame(roll);
 
                 //If first bowl of frame is less than 10, return tidy else return end turn
                 if (isFirstRoll == true)
@@ -71,7 +67,7 @@ public class ActionMaster {
         return actionToReturn;
     }
 
-    private Action ProcessFinalFrame(List<int> pinList, int pinsHitLastRoll)
+    private static Action ProcessFinalFrame(List<int> pinList, int pinsHitLastRoll, int roll)
     {
         switch (roll)
         {
@@ -120,7 +116,7 @@ public class ActionMaster {
         }
     }
 
-    private bool IsFirstRollOfFrame()
+    private static bool IsFirstRollOfFrame(int roll)
     {
         if (roll % 2 == 0)
         {
@@ -132,7 +128,7 @@ public class ActionMaster {
         }
     }
 
-    private bool IsFinalFrame()
+    private static bool IsFinalFrame(int roll)
     {
         if (roll >= 19)
         {
