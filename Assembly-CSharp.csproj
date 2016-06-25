@@ -45,17 +45,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\START Pack\Scripts\ActionMaster2.cs" />
      <Compile Include="Assets\START Pack\Scripts\OurScoreDisplayTest1.cs" />
      <Compile Include="Assets\Scripts\Ball.cs" />
      <Compile Include="Assets\Scripts\CameraControl.cs" />
      <Compile Include="Assets\Scripts\DragLaunch.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Helper Scripts\ActionMaster.cs" />
+     <Compile Include="Assets\Scripts\Helper Scripts\ActionMaster2.cs" />
      <Compile Include="Assets\Scripts\Helper Scripts\ScoreMaster.cs" />
      <Compile Include="Assets\Scripts\Pin.cs" />
      <Compile Include="Assets\Scripts\PinCounter.cs" />
      <Compile Include="Assets\Scripts\PinSetter.cs" />
+     <Compile Include="Assets\Scripts\ScoreDisplay.cs" />
      <Compile Include="Assets\Scripts\Shredder.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>E:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

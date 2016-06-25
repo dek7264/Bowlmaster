@@ -15,7 +15,7 @@ public class Pin : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log(name + " " + IsStanding().ToString());
+
 	}
 
     public bool IsStanding()

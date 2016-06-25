@@ -9,19 +9,22 @@ public class GameManager : MonoBehaviour {
 
     private const int INITIAL_PIN_COUNT = 10;
     private List<int> pinsKnockedDownList = new List<int>();
-    private ActionMaster actionMaster = new ActionMaster();
-    private ScoreMaster scoreMaster = new ScoreMaster();
     private PinCounter pinCounter;
+    private ScoreDisplay scoreDisplay;
 
 	// Use this for initialization
 	void Start () {
         if (ball == null)
         {
-            GameObject.FindObjectOfType<Ball>();
+            ball = GameObject.FindObjectOfType<Ball>();
         }
         if (pinSetter == null)
         {
-            GameObject.FindObjectOfType<PinSetter>();
+            pinSetter = GameObject.FindObjectOfType<PinSetter>();
+        }
+        if (scoreDisplay == null)
+        {
+            scoreDisplay = GameObject.FindObjectOfType<ScoreDisplay>();
         }
         InitializePinCounter();
 	}
@@ -31,38 +34,49 @@ public class GameManager : MonoBehaviour {
         pinCounter = GameObject.FindObjectOfType<PinCounter>();
         pinCounter.SetMaxPinsForCurrentRoll(INITIAL_PIN_COUNT);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     public void Bowl(int pinsKnockedDown)
     {
-        Debug.Log("pinsKnockedDown " + pinsKnockedDown);
-        //Register number of pins knocked down
-        pinsKnockedDownList.Add(pinsKnockedDown);
+        try
+        {
+            //Register number of pins knocked down
+            pinsKnockedDownList.Add(pinsKnockedDown);
 
-        //Get the Action for the pinSetter to Perform
-        ActionMaster.Action nextAction = GetNextPinSetterAction();
+            //Reset the ball
+            ResetBall();
 
-        //Inform the PinCounter of it's maximum number of pins for the next roll
-        SetPinCounterMaxPinsForCurrentRollBasedOnNextAction(nextAction, pinsKnockedDown);
+            //Get the Action for the pinSetter to Perform
+            ActionMaster.Action nextAction = GetNextPinSetterAction();
 
-        //Report pinsKnockedDown to the ActionMaster and get the Action the PinSetter needs to perform
-        ReportActionToPinSetter(nextAction);
+            //Inform the PinCounter of it's maximum number of pins for the next roll
+            SetPinCounterMaxPinsForCurrentRollBasedOnNextAction(nextAction, pinsKnockedDown);
+         
+            //Report pinsKnockedDown to the ActionMaster and get the Action the PinSetter needs to perform
+            ReportActionToPinSetter(nextAction);
+        }
+        catch
+        {
+            Debug.LogWarning("GameManager failed when reporting action to PinSetter");
+        }
 
-        //Pass pinsKnockedDownList to ScoreMaster so it can generate the final frame scores to report to the ScoreDisplay
-        GetFrameScores();
+        //Pass roll scores to ScoreDisplay
+        try
+        {
+            scoreDisplay.FillRolls(pinsKnockedDownList);
+        }
+        catch
+        {
+            Debug.LogWarning("ScoreDisplay failed to FillScoreCard");
+        }
 
-        //Reset the ball
-        ResetBall();
+        //Pass cumulative frame scores to ScoreDisplay
+        scoreDisplay.FillFrames(ScoreMaster.ScoreCumulative(pinsKnockedDownList));
+        
     }
 
     private ActionMaster.Action GetNextPinSetterAction()
     {
-        ActionMaster.Action actionToPerform = actionMaster.GetNextAction(pinsKnockedDownList);
-        Debug.Log("ActionToPerform: " + actionToPerform);
+        ActionMaster.Action actionToPerform = ActionMaster.NextAction(pinsKnockedDownList);
         return actionToPerform;
     }
 
@@ -84,17 +98,6 @@ public class GameManager : MonoBehaviour {
     private void ReportActionToPinSetter(ActionMaster.Action actionToPerform)
     {
         pinSetter.PerformAction(actionToPerform);
-    }
-
-    private void GetFrameScores()
-    {
-        List<int> frameScores = scoreMaster.ScoreFrames(pinsKnockedDownList);
-        string frameScoreOutput = "";
-        for (int i = 0; i < frameScores.Count; i++)
-        {
-            frameScoreOutput += "Frame " + (i + 1).ToString() + ": " + frameScores[i];
-        }
-        Debug.Log(frameScoreOutput);
     }
 
     private void ResetBall()

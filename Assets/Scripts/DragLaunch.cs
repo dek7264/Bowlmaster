@@ -58,9 +58,6 @@ public class DragLaunch : MonoBehaviour {
     {
         if (ball.HasLaunched == false)
         {
-            //Debug.Log("Moving " + xNudge);
-            //ball.transform.position += new Vector3(xNudge, 0f, 0f);
-            //ball.transform.Translate(new Vector3(xNudge, 0f, 0f));
             float newX = Mathf.Clamp(ball.transform.position.x + xNudge, lane.transform.lossyScale.x / -2, lane.transform.lossyScale.x / 2);
             ball.transform.position = new Vector3(newX, ball.transform.position.y, ball.transform.position.z);
         }
